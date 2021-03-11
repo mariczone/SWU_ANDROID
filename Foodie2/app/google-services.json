@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "956740630670",
+    "project_id": "foodie2-4872a",
+    "storage_bucket": "foodie2-4872a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956740630670:android:36f9c0d580cf91b751b1df",
+        "android_client_info": {
+          "package_name": "com.giscompany.foodie2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "956740630670-hfrm220b1qr774tfgc0s3cdlbnmhj35v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAg4o1pTAPkfzGy0aUNhQr79ZQFWZ2vcyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "956740630670-hfrm220b1qr774tfgc0s3cdlbnmhj35v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

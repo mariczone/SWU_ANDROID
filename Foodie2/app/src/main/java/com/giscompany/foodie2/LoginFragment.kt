@@ -6,8 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.giscompany.foodie2.Util.getLoading
+import com.google.firebase.auth.FirebaseAuth
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,10 +25,19 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class LoginFragment : Fragment() {
+    private lateinit var mAuth: FirebaseAuth
+
+
     lateinit var navController: NavController
+    lateinit var etEmail: EditText
+    lateinit var etPassword: EditText
+    lateinit var tvSwapMode: TextView
+    lateinit var nextBtn: Button
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var isLoginForm: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,10 +57,59 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mAuth = FirebaseAuth.getInstance()
         navController = findNavController()
-        var nextBtn = view.findViewById(R.id.goToOnbaordBtn) as Button;
+        nextBtn = view.findViewById(R.id.goToOnbaordBtn) as Button;
+        etEmail = view.findViewById<EditText>(R.id.etEmailInput)
+        etPassword = view.findViewById<EditText>(R.id.etPasswordInput)
+        tvSwapMode = view.findViewById<TextView>(R.id.swapToRegisterBtn)
         nextBtn.setOnClickListener {
-            navController.navigate(R.id.action_loginFragment_to_onboardingFragment)
+            val email = etEmail.text.toString().trim { it <= ' ' }
+            val password = etPassword.text.toString().trim { it <= ' ' }
+//            Toast.makeText(activity, "Email: $email, Password: $password", Toast.LENGTH_SHORT).show()
+            if (!isLoginForm) {
+                register(email, password)
+            } else {
+                login(email, password)
+            }
+        }
+        tvSwapMode.setOnClickListener {
+            isLoginForm = !isLoginForm;
+            if (isLoginForm) {
+                nextBtn.text = "LOGIN"
+                tvSwapMode.text = "SignUp"
+            } else {
+                nextBtn.text = "REGISTER"
+                tvSwapMode.text = "SignIn"
+            }
+        }
+    }
+
+    private fun register(email: String, password: String) {
+        mAuth!!.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Case Success
+                mAuth.currentUser?.sendEmailVerification()?.addOnCompleteListener{
+                    Toast.makeText(activity, "Create account successfully!, Please check your email for verification", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(activity, "Authentication failed.",
+                    Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun login(email: String, password: String) {
+        var dialog = getLoading()
+        dialog.show()
+        mAuth!!.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            dialog.dismiss()
+            if (!task.isSuccessful) {
+                Toast.makeText(activity, "Authentication Failed: " + task.exception!!.message, Toast.LENGTH_SHORT).show()
+            } else {
+                // Case Login Success
+                navController.navigate(R.id.action_loginFragment_to_onboardingFragment)
+            }
         }
     }
 

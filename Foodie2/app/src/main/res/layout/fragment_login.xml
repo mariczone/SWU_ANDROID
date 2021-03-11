@@ -51,6 +51,7 @@
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEmailInput"
                     android:background="@drawable/round_corner"
                     android:textColor="@color/white"
                     android:layout_width="match_parent"
@@ -69,6 +70,7 @@
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPasswordInput"
                     android:background="@drawable/round_corner"
                     android:textColor="@color/white"
                     android:inputType="textPassword"
@@ -96,10 +98,11 @@
                     android:text="Don't have an account?"
                     android:textColor="#7B7C80"/>
                 <TextView
+                    android:id="@+id/swapToRegisterBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="Signup"
+                    android:text="SignUp"
                     android:textColor="#DC668A"/>
             </LinearLayout>
         </LinearLayout>
